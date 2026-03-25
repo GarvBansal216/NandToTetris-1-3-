@@ -1,0 +1,31 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip implements a basic OR gate.
+// Output is 1 if at least one input is 1.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Or.hdl
+
+/**
+ * Or gate: out = 1 if {a==1 or b==1}, 0 otherwise
+ */
+
+CHIP Or {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    // invert inputs (needed for De Morgan)
+    Not(in=a,out=not_a);
+    Not(in=b,out=not_b);
+    // OR = NAND( NOT a , NOT b )
+    Nand(a=not_a,b=not_b,out=out);
+}

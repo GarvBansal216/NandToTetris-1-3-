@@ -1,0 +1,31 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip computes a half-adder for two input bits.
+// `sum` is the XOR result and `carry` is the AND result.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/HalfAdder.hdl
+
+/**
+ * Computes the sum of two bits.
+ */
+
+CHIP HalfAdder {
+    IN a, b;    // 1-bit inputs
+    OUT sum,    // Right bit of a + b 
+        carry;  // Left bit of a + b
+
+    PARTS:
+    // carry = a AND b
+    And(a=a,b=b,out=carry);
+    // sum = a XOR b
+    Xor(a=a,b=b,out=sum);
+}

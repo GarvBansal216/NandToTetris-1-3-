@@ -1,0 +1,53 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip is the Program Counter (PC).
+// It can reset, load a value, or increment by 1.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/a/PC.hdl
+
+/**
+ * A 16-bit counter with load and reset control bits.
+ * if      (reset[t]==1) out[t+1] = 0
+ * else if (load[t]==1)  out[t+1] = in[t]
+ * else if (inc[t]==1)   out[t+1] = out[t] + 1  (integer addition)
+ * else                  out[t+1] = out[t]
+ */
+
+CHIP PC {
+    IN in[16],load,inc,reset;
+    OUT out[16];
+
+    PARTS:
+    // current PC value is stored in pc_state
+    Inc16(in=pc_state,out=inc_result);
+
+    // optionally increment the PC
+    Mux16(a=pc_state,b=inc_result,sel=inc,out=after_inc_mux);
+
+    // optionally load the input value
+    Mux16(a=after_inc_mux,b=in,sel=load,out=after_load_mux);
+
+    // optionally reset to 0
+    Mux16(a=after_load_mux,b=false,sel=reset,out=after_reset_mux);
+
+    // store the chosen next value back into the PC
+    Register(in=after_reset_mux,load=true,out=pc_state,out=out);
+
+}
+
+/**
+ * Reference: http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/PC-Hdl-td4026543.html
+ * User cadet1620's answer really inspired me
+ *
+ */
+
+

@@ -1,0 +1,28 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip is a NOT gate.
+// It flips the input bit (0 becomes 1, and 1 becomes 0).
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Not.hdl
+
+/**
+ * Not gate: out = not in
+ */
+
+CHIP Not {
+    IN in;
+    OUT out;
+
+    PARTS:
+    // use NAND with both inputs tied together
+    Nand(a=in,b=in,out=out);
+}

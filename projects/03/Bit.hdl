@@ -1,0 +1,33 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip is a 1-bit register.
+// When `load` is 1, it stores `in`; otherwise it keeps its old value.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/a/Bit.hdl
+
+/**
+ * 1-bit register.
+ * If load[t]=1 then out[t+1] = in[t]
+ *              else out does not change (out[t+1]=out[t])
+ */
+
+CHIP Bit {
+    IN in, load;
+    OUT out;
+
+    PARTS:
+    // pick either the input or the old stored bit
+    Mux(a=bit_q,b=in,sel=load,out=bit_mux_out);
+
+    // store the chosen value
+    DFF(in=bit_mux_out,out=bit_q,out=out);
+}

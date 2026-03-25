@@ -1,0 +1,35 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip computes a full-adder for three 1-bit inputs.
+// It outputs `sum` (LSB) and `carry` (MSB).
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * Computes the sum of three bits.
+ */
+
+CHIP FullAdder {
+    IN a, b, c;  // 1-bit inputs
+    OUT sum,     // Right bit of a + b + c
+        carry;   // Left bit of a + b + c
+
+    PARTS:
+    // first add a and b
+    HalfAdder(a=a,b=b,sum=sum_temp,carry=carry_stage1);
+
+    // then add c and the previous partial sum
+    HalfAdder(a=c,b=sum_temp,sum=sum,carry=carry_stage2);
+
+    // carry happens if either stage produces a carry
+    Or(a=carry_stage1,b=carry_stage2,out=carry);
+}

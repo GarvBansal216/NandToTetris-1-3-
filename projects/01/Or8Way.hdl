@@ -1,0 +1,38 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip does a reduction OR over 8 inputs.
+// Output is 1 if at least one input bit is 1.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Or8Way.hdl
+
+/**
+ * 8-way or gate: out = in[0] or in[1] or ... or in[7].
+ */
+
+CHIP Or8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+    // OR pairs of the input bits
+    Or(a=in[0],b=in[1],out=or_pair_01);
+    Or(a=in[2],b=in[3],out=or_pair_23);
+    Or(a=in[4],b=in[5],out=or_pair_45);
+    Or(a=in[6],b=in[7],out=or_pair_67);
+
+    // combine results of the pairs
+    Or(a=or_pair_01,b=or_pair_23,out=or_pairs_0123);
+    Or(a=or_pair_45,b=or_pair_67,out=or_pairs_4567);
+
+    // final OR for all 8 inputs
+    Or(a=or_pairs_0123,b=or_pairs_4567,out=out);
+}

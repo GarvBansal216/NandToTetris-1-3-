@@ -1,0 +1,44 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip is RAM64 (64 words, 16-bit each).
+// Address selects which word to read, and `load` writes into the selected word.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/a/RAM64.hdl
+
+/**
+ * Memory of 64 registers, each 16 bit-wide. Out hold the value
+ * stored at the memory location specified by address. If load=1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out after the next time step.)
+ */
+
+CHIP RAM64 {
+    IN in[16], load, address[6];
+    OUT out[16];
+
+    PARTS:
+    // pick which RAM8 block gets the write enable
+    DMux8Way(in=load,sel=address[3..5],a=bank_load0,b=bank_load1,c=bank_load2,d=bank_load3,e=bank_load4,f=bank_load5,g=bank_load6,h=bank_load7);
+
+    // 8 RAM8 blocks
+    RAM8(in=in,load=bank_load0,address=address[0..2],out=bank_data0);
+    RAM8(in=in,load=bank_load1,address=address[0..2],out=bank_data1);
+    RAM8(in=in,load=bank_load2,address=address[0..2],out=bank_data2);
+    RAM8(in=in,load=bank_load3,address=address[0..2],out=bank_data3);
+    RAM8(in=in,load=bank_load4,address=address[0..2],out=bank_data4);
+    RAM8(in=in,load=bank_load5,address=address[0..2],out=bank_data5);
+    RAM8(in=in,load=bank_load6,address=address[0..2],out=bank_data6);
+    RAM8(in=in,load=bank_load7,address=address[0..2],out=bank_data7);
+
+    // pick the correct block output as the final RAM output
+    Mux8Way16(a=bank_data0,b=bank_data1,c=bank_data2,d=bank_data3,e=bank_data4,f=bank_data5,g=bank_data6,h=bank_data7,sel=address[3..5],out=out);
+}

@@ -1,0 +1,36 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip implements an XOR gate.
+// Output is 1 when the inputs are different.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Xor.hdl
+
+/**
+ *  Exclusive-or gate: out = !(a == b).
+ */
+
+CHIP Xor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    // invert inputs
+    Not(in=a,out=not_a);
+    Not(in=b,out=not_b);
+
+    // partial products for XOR
+    And(a=not_a,b=b,out=and_not_a_b);
+    And(a=a,b=not_b,out=and_a_not_b);
+
+    // OR the partial products
+    Or(a=and_not_a_b,b=and_a_not_b,out=out);
+}

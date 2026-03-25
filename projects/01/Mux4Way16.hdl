@@ -1,0 +1,36 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip is a 4-way 16-bit multiplexer.
+// It uses `sel[0]` to pick a/b vs c/d, and `sel[1]` to choose the final group.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way 16-bit multiplexor.
+ * out = a if sel==00
+ *       b if sel==01
+ *       c if sel==10
+ *       d if sel==11
+ */
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+
+    PARTS:
+    // first stage: pick from (a,b) and (c,d)
+    Mux16(a=a,b=b,sel=sel[0],out=mux_ab);
+    Mux16(a=c,b=d,sel=sel[0],out=mux_cd);
+
+    // second stage: pick between the two stage results
+    Mux16(a=mux_ab,b=mux_cd,sel=sel[1],out=out);
+}

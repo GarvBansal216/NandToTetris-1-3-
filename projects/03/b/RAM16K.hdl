@@ -1,0 +1,40 @@
+// ---
+//
+// Name: Garv Bansal
+// Registration Number: 24BAI1170
+// Course: Computer Architecture and Organization
+// Assignment: Nand2Tetris Projects 1–3
+//
+// This chip is RAM16K (16384 words, 16-bit each).
+// Address selects the word to read, and `load` controls which bank is written.
+//
+// ---------------------------------------
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/b/RAM16K.hdl
+
+/**
+ * Memory of 16K registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load=1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out after the next time step.)
+ */
+
+CHIP RAM16K {
+    IN in[16], load, address[14];
+    OUT out[16];
+
+    PARTS:
+    // decode address into 4 RAM4K write enables
+    DMux4Way(in=load,sel=address[12..13],a=bank_load0,b=bank_load1,c=bank_load2,d=bank_load3);
+
+    // 4 RAM4K blocks
+    RAM4K(in=in,load=bank_load0,address=address[0..11],out=bank_data0);
+    RAM4K(in=in,load=bank_load1,address=address[0..11],out=bank_data1);
+    RAM4K(in=in,load=bank_load2,address=address[0..11],out=bank_data2);
+    RAM4K(in=in,load=bank_load3,address=address[0..11],out=bank_data3);
+
+    // select the correct bank output
+    Mux4Way16(a=bank_data0,b=bank_data1,c=bank_data2,d=bank_data3,sel=address[12..13],out=out);
+}
